@@ -33,17 +33,63 @@ list(APPEND SNOWCTL_OTHER
 
 
 if (APPLE)
-	set(CMAKE_C_COMPILER /usr/bin/clang)
-	set(CMAKE_CXX_COMPILER /usr/bin/clang++)
+        set(CMAKE_C_COMPILER /usr/bin/clang)
+        set(CMAKE_CXX_COMPILER /usr/bin/clang++)
+
+        set(MACOSX_BUNDLE_ICON_FILE ${CMAKE_CURRENT_SOURCE_DIR}/../snowberry.icns )
+        set(APP_ICON "${MACOSX_BUNDLE_ICON_FILE}")
+        list(APPEND OTHER_TARGETS ${APP_ICON})
+        list(APPEND SNOWCTL_SOURCES ${SNOWLIBS}/cocoainitializer/cocoainitializer.mm)
+        list(APPEND SNOWCTL_HEADERS ${SNOWLIBS}/cocoainitializer/cocoainitializer.h)
+        add_custom_target(SNOWCTL_OTHER SOURCES ${OTHER_TARGETS})
+        set_property(SOURCE ${APP_ICON} PROPERTY MACOSX_PACKAGE_LOCATION
+                ${MACOSX_BUNDLE_ICON_FILE})
+        file(COPY ${APP_ICON} DESTINATION
+                 ${CMAKE_CURRENT_BINARY_DIR})
+        #add_executable(${PROJECT_NAME} MACOSX_BUNDLE
+        add_executable(${PROJECT_NAME}
+                ${SNOWCTL_OTHER}
+                ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
+                ${SNOWCTL_HEADERS}
+                ${SNOWCTL_SOURCES}
+                ${SNOWCTL_UIS}
+                ${SNOWCTL_RES}
+        )
+        target_sources(${PROJECT_NAME} PRIVATE
+                ${OTHER_TARGETS}
+        )
+        set_source_files_properties(
+                ${OTHER_TARGETS}
+                PROPERTIES
+                MACOSX_PACKAGE_LOCATION Resources/
+        )
+        set_target_properties(${PROJECT_NAME} PROPERTIES
+                BUNDLE TRUE
+                MACOSX_BUNDLE_GUI_IDENTIFIER org.peondevelopments.snowctl
+                MACOSX_BUNDLE_BUNDLE_NAME ${PROJECT_NAME}
+                MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+                MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION}
+        )
+        set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS
+                 "-Wl,-F/Library/Frameworks")
+        target_link_libraries(${PROJECT_NAME} stdc++
+                "-framework Cocoa"
+                objc
+        )
+else()
+        add_executable(${PROJECT_NAME}
+                ${SNOWCTL_OTHER}
+                main.cpp
+                ${SNOWCTL_HEADERS}
+                ${SNOWCTL_SOURCES}
+                ${SNOWCTL_UIS}
+                ${SNOWCTL_RES}
+        )
 endif()
 
-add_executable(${PROJECT_NAME}
-		${SNOWCTL_OTHER}
-		main.cpp
-		${SNOWCTL_HEADERS}
-		${SNOWCTL_SOURCES}
-		${SNOWCTL_UIS}
-		${SNOWCTL_RES}
-	)
-
 target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Network)
+if(APPLE)
+        install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION ${CMAKE_SOURCE_DIR})
+else()
+        install(TARGETS ${PROJECT_NAME})
+endif()

@@ -11,34 +11,31 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = Snowberry
 TEMPLATE = app
 
-
-SOURCES += main.cpp\
-        mainwindow.cpp\
-        about.cpp\
-        preferences.cpp
-
-HEADERS  += mainwindow.h\
-        about.h\
-        preferences.h
-
-macx { 
-
-    LIBS += -framework Cocoa
-
-    QT += macextras
-
-    OBJECTIVE_SOURCES += cocoainitializer.mm
-    OBJECTIVE_HEADERS += cocoainitializer.h
-
-}
+SOURCES += main.cpp
 
 OTHER_FILES = \
     snowberrynotes1.txt \
     snowberrynotes.txt \
     LEFTOFF.txt \
-    DESIGN.txt
+    DESIGN.txt \
+    CMakeLists.txt \
+    \
+    snowd/main.cpp \
+    snowd/CMakeLists.txt \
+    \
+    snowgui/CMakeLists.txt \
+    snowgui/main.cpp \
+    snowgui/about.cpp \
+    snowgui/about.h \
+    snowgui/about.ui \
+    snowgui/cocoainitializer.h \
+    snowgui/cocoainitializer.mm \
+    snowgui/mainwindow.h \
+    snowgui/mainwindow.cpp \
+    snowgui/preferences.h \
+    snowgui/preferences.cpp \
+    snowgui/preferences.ui \
+    \
+    snowctl/CMakeLists.txt \
+    snowctl/main.cpp
 
-
-FORMS    += mainwindow.ui\
-        about.ui\
-        preferences.ui

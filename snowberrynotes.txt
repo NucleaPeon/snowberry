@@ -79,6 +79,7 @@ snowctl:
 snowctl keeps a cached version of all collections/playlists. Keeps it in ram if optimize is on, otherwise directly modify db/files and not use cache.
 
 
+The daemon keeps its state in a text file so if unreachable, it can be read what the last state was.
 
 Database:
 

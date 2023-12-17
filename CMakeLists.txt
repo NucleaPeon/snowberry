@@ -12,6 +12,8 @@ project(snowberry
 #    defensive checks for things it relies on (and create a static build to
 #    incorporate Qt5 deps)
 
+set(SNOWLIBS "${PROJECT_SOURCE_DIR}/libs")
+
 include(GNUInstallDirs)  # REQUIRED TO INSTALL PKGCONFIG TO PROPER DIR!
 add_subdirectory(snowd)
 add_subdirectory(snowctl)

@@ -1,0 +1,8 @@
+Library dependencies
+--------------------
+
+Libraries will be git submodules that we expect to be checked out.
+
+- QtUPnP
+- qt5menugen
+- ...

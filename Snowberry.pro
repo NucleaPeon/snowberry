@@ -32,6 +32,12 @@ macx {
 
 }
 
+OTHER_FILES = \
+    snowberrynotes1.txt \
+    snowberrynotes.txt \
+    LEFTOFF.txt \
+    DESIGN.txt
+
 
 FORMS    += mainwindow.ui\
         about.ui\

@@ -1,0 +1,107 @@
+Snowberry:
+
+Music Player compatible with WinXP, Snow Leopard and Linux (x86/amd64/ppc/ppc64)
+
+Features include:
+
+    - Headless (snowctl controller program + daemon) and GUI mode
+    - Network playback (store collections on servers; local file database reflecting remote collection, stream songs instead of downloading each)
+    - Tagging
+    - Transcoding built in
+    - Some effects such as modified start/stop/repeat/loop/random with export for
+      easy song modification
+    - last.fm integration
+
+    - Be able to utilize upnp collections over network. Also be able to consolidate/export
+      networked collections into a directory or mount point (by copying files if necessary)
+      or simply leave as network addresses to files.
+    - Upload to network collection option ("Add to Collection..." -> "This Collection is on a network. Upload? Y/N")
+    - Have a modal to go through and list all songs that are missing certain tags.
+      For lastfm, you need artist and title. If meta tags are messed up and there's no artist, you can have it search and
+      warn that N songs have no artist in their tags (show in a status bar box or something)
+      This can be modified so you can show all your songs that are missing things you want like albums or years or whatever.
+    - Have "modes" which are basically setting overlays that determine player behavior:
+      * Play most popular
+      * Play least played
+      * Completely Random
+      * Linear
+      * Custom (user sets playback rules)
+
+    - associate different equalizers on a per-genre basis
+
+Use cmake to build it
+
+Have an option to end song at [time] and start song at [time] for [x] number of loops (or infinite) so people can do their own 'songs on repeat',
+then have ability to export that (with max loops/time of, say, 24 hours or approximate storage estimate left)
+
+
+
+snowctl ----> load collection -----> starting song point -----> allow inputs
+snowgui ----> connect to snowctl ----> load and display collection -----> wait for inputs
+
+
+snowctl:
+
+    --non-interactive: Used by snowgui, ignores any prompts (password decrypt for last.fm creds, etc). Ignored prompts should be placed into a queue where the gui can then address them (ie: modal prompt for password)
+
+    load [playlist/collection] [filename/name/id] (playlist name if stored in db, collection uuid)
+        - multiple collections and playlists can be loaded at a time, or only what you
+          want each time program is loaded
+
+    auto [load [playlist/collection] [filename/name/id]]  # start program with loaded collections/playlists
+         [play [on/off/true/false]]  # when a song is loaded, immediately play it
+         [scrobble [on/off/true/false]]  # enable last.fm scrobbling if applicable
+         [countplays [on/off/true/false]]  # tag each song with plays+1
+         [save [on/off/true/false "HH:mm:ss"]] # if time is specified, save temporary data on changes in the collection or playlsit (ie: removed files, added files, etc.
+
+
+    play
+        # no params: play currently selected or first in first collection/playlist
+        # [qreal]: play position
+        # [str]: play song if matches (try full filename, then w/o file extension. Query the database (files are stored, extension in a different column though so don't worry about stripping collection extensions)
+        # [str] [qreal]: play song at time
+
+    loop [start:qreal, stop:qreal, count:int, on/off/true/false]  # optional start and stops, or if on/off/true/false is used on a song with defined start/stop times, it disables/enables that specific loop setting. Otherwise, assumes 0 - end. If count is -1, it is disabled. If 0, infinite, else a limited number of times.
+
+    scrobble [username]  # prompt for username  (store in config)
+             [password]  # prompt for password  (store in config)
+             [file]      # look to file for configuration username/password
+             [encrypt]   # turn username/password into hashes, prompt for password on
+                           program start. snowctl will prompt unless --non-interactive is passed in.
+
+    cache [on/off/true/false]  # Enable improved performance mode at the expense of greater memory usage. If enabled, startup will look for the cached database of previously loaded collections and playlists. If disabled, startup is empty unless playlists/collections are specified on startup. Cache will write on exit or on auto save parameter (perhaps have an inactivity:mm period parameter for writes too).
+
+    stream [on/off/true/false]  # if disabled, will copy a file to tmpfs or directory before playback, otherwise attempts to do a stream (which may cause buffering if network issues or buffer not correct)
+
+    exit
+        saves and exits
+
+snowctl keeps a cached version of all collections/playlists. Keeps it in ram if optimize is on, otherwise directly modify db/files and not use cache.
+
+
+
+Database:
+
+Use sqlite by default, but have other database options, least of which is postgres
+
+
+Tables:
+
+Use uuids for ids so it's portable between computers and collections
+
+    songs: id uuid, path, extension
+    loops: song_id, start, stop, count
+    scrobble: username, password, type (plain/hash), enabled t/f
+        (this table is looked for first (if enabled true), then config, then provided in prompts)
+    collections: uuid, name
+    playlists: uuid, playlistpath
+    # these two tables contain all the connections of all collections/playlists
+    # if looping is enabled, there can be a join in the query or another query to pull loop data.
+    playlistrefs: playlist_id, song_id
+    collectionrefs: collection_id, song_id
+
+Can export these as
+
+~/.config/snowberry/scrobbler.conf /etc/snowberry/scrobbler.conf
+~/.local/share  for database storage (see qt5.3 enum for where to put it, I'm guessing here.)
+

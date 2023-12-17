@@ -1,0 +1,65 @@
+Snowberry Program Design
+
+- Look at strawberrynotes.txt for cli functionality
+
+UI
+==
+
+- 3 screens with File Browser/Collection Manager/ | Information | Tracklist/Playlist as per amarok1/2/3
+- Middle screen is tabbed (the one where choices are stacked and act like accordion) and handles statistics, lyrics, album art, etc.
+- Screens should be switchable / configurable (ie: can be Information | Collection | Tracklist) and even hideable (Just Tracklist)
+- Write according to OS X 2009 Guidelines document
+- Have preset configurations to switch between (similar to session manager in kate -except for ui) with defaults being:
+    "Collection View" (Collection Manager and Tracklist), "Modern View" (all 3 viewable), and "iTunes View" (Tracklist only but detailed tracklist with all columns)
+- Playback bar (with buttons + progress + volume control) can be set to top or bottom.
+- Equalizer? Feature for later.
+- Implement filters for finding songs, setting tags and metadata, database querying
+- UPnP collection additions (separate collections)
+    - Search by collections, user can set a folder (and subfolders) or a network upnp server as a collection and then search within.
+
+- First run wizard
+- Have lots of wizards
+
+- Connect with a whisper instance to get lyrics (?)
+
+DB
+==
+
+Metadata db:
+    - lists collections
+    - lists saved settings (but not default loaded settings: saves templates but not if they are the default ones)
+
+Collection db:
+    - All songs and metadata - option to embed songs in db which would increase size but allow access from instances that access it
+    - table that contains collection metadata such as # of songs, total length of all songs playback, last scanned, any settings, etc.
+    - UPnP collections have the option of mirroring the data within the snowberry database to avoid scanning (if this is possible) or
+      reduce updating (or simply rely on manual requests to update.)
+
+If using sqlite3 (default but not recommended for, say, collections > 1000 songs? warn but don't force)
+
+
+
+If we can manage to include youtube-dl with OS X 10.6.8 using port packages installed with snowberry (incld. openssh 3 for ssh access fallback),
+then we can enable downloading audio via url.
+
+Perhaps make a makeshift ssh music server where you call a 'find {dir} -name '*.mp3' -or -name '*...' (for all audio types specified) and the list returned
+is added as a collection and each file is downloaded (either permanently to database or into ram)
+
+IMPLEMENT HOOKS: beforeLoad / afterLoad / beforePlayback / after playback (inclds. skip, stop (not pause) and exit) / songFinished / onNextSong (does not fire on repeat and in same hook as beforeLoad assuming song is not the same one as current)
+                 / programExit / programLoad / onPlaylistStart / onPlaylistEnd / etc.
+That way if using ram download via ssh for playback, only clear ram used to store file data on
+
+Have good logging.
+
+
+*** FOCUS ON SOMETHING SIMPLE, TrackList FIRST, THEN WORRY ABOUT COLLECTIONS. GETTING MUSIC TO PLAY WITHOUT ERROR, DOING SIMPLE PLAYLIST WORK
+    AND MAYBE LOOK INTO WHETHER IT CAN HOOK INTO last.fm (unlikely but let's see). IN FACT, WORK WITH JUST ARTIST, ALBUM AND TITLE ATTRIBUTES
+    UNTIL WE HAVE WORKING PLAYER ***
+
+
+Dependencies
+============
+
+hfsplus, ntfs or ext4 file systems supported (but others may work)
+libraries (put in build tree as submodules to compile and build)
+Qt5.3.2

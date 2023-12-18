@@ -1,0 +1,21 @@
+#ifndef SNOWD_VERSION_H
+#define SNOWD_VERSION_H
+
+// Compiler accessible definitions
+
+#define SNOWD_VERSION_RELEASE "@PROJECT_VERSION_MAJOR@"
+#define SNOWD_VERSION_MAJOR "@PROJECT_VERSION_MINOR@"
+#define SNOWD_VERSION_MINOR "@PROJECT_VERSION_PATCH@"
+#define SNOWD_VERSION_PATCH "@PROJECT_VERSION_TWEAK@"
+
+// Program accessible definitions
+
+namespace Snowberry {
+    namespace SnowD {
+        const int SNOWD_RELEASE_VERSION = @PROJECT_VERSION_MAJOR@;
+        const int SNOWD_MAJOR_VERSION = @PROJECT_VERSION_MINOR@;
+        const int SNOWD_MINOR_VERSION = @PROJECT_VERSION_PATCH@;
+        const int SNOWD_PATCH_VERSION = @PROJECT_VERSION_TWEAK@;
+    }
+}
+#endif // SNOWD_VERSION_H

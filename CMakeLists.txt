@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.3)
 project(snowberry
-	VERSION 0.9.0
+        VERSION 0.9.0.0
 	LANGUAGES C CXX
 	DESCRIPTION "Qt5 Collection-based Music Player for Linux, OS X and Windows"
 )

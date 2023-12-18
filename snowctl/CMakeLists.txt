@@ -1,11 +1,14 @@
 cmake_minimum_required(VERSION 3.3)
 project(snowctl
-	VERSION 0.1.0
+        VERSION 0.1.0.0
 	LANGUAGES C CXX
 	DESCRIPTION "Qt5 Command Line Music Player Controller Snowberry Component"
 )
-
 include(GNUInstallDirs)  # REQUIRED TO INSTALL PKGCONFIG TO PROPER DIR!
+
+# Immediately set the version.h header
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/version.h)
+
 #add_compile_options(-v)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC OFF)

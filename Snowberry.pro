@@ -19,9 +19,12 @@ OTHER_FILES = \
     LEFTOFF.txt \
     DESIGN.txt \
     CMakeLists.txt \
+    globals.h \
+    version.h.in \
     \
     snowd/main.cpp \
     snowd/CMakeLists.txt \
+    snowd/version.h.in \
     \
     snowgui/CMakeLists.txt \
     snowgui/main.cpp \
@@ -35,7 +38,9 @@ OTHER_FILES = \
     snowgui/preferences.h \
     snowgui/preferences.cpp \
     snowgui/preferences.ui \
+    snowgui/version.h.in \
     \
     snowctl/CMakeLists.txt \
-    snowctl/main.cpp
+    snowctl/main.cpp \
+    snowctl/version.h.in
 

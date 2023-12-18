@@ -1,0 +1,22 @@
+#ifndef SNOWGUI_VERSION_H
+#define SNOWGUI_VERSION_H
+
+// Compiler accessible definitions
+
+#define SNOWGUI_VERSION_RELEASE "@PROJECT_VERSION_MAJOR@"
+#define SNOWGUI_VERSION_MAJOR "@PROJECT_VERSION_MINOR@"
+#define SNOWGUI_VERSION_MINOR "@PROJECT_VERSION_PATCH@"
+#define SNOWGUI_VERSION_PATCH "@PROJECT_VERSION_TWEAK@"
+
+// Program accessible definitions
+
+namespace Snowberry {
+    namespace SnowGUI {
+        const int SNOWGUI_RELEASE_VERSION = @PROJECT_VERSION_MAJOR@;
+        const int SNOWGUI_MAJOR_VERSION = @PROJECT_VERSION_MINOR@;
+        const int SNOWGUI_MINOR_VERSION = @PROJECT_VERSION_PATCH@;
+        const int SNOWGUI_PATCH_VERSION = @PROJECT_VERSION_TWEAK@;
+    }
+}
+
+#endif // SNOWGUI_VERSION_H

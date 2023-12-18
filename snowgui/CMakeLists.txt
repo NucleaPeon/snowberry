@@ -1,9 +1,12 @@
 cmake_minimum_required(VERSION 3.3)
 project(snowgui
-	VERSION 0.1.0
+        VERSION 0.1.0.0
 	LANGUAGES C CXX
 	DESCRIPTION "Qt5 Graphical Interface Snowberry Component"
 )
+
+# Immediately set the version.h header
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/version.h @ONLY)
 
 include(GNUInstallDirs)  # REQUIRED TO INSTALL PKGCONFIG TO PROPER DIR!
 #add_compile_options(-v)
@@ -15,21 +18,33 @@ set(CMAKE_AUTORCC ON)
 include(GNUInstallDirs)  # REQUIRED TO INSTALL PKGCONFIG TO PROPER DIR!
 #add_compile_options(-v)
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOUIC OFF)
+set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 find_package(Qt5 REQUIRED
     Core
+    Gui
+    Widgets
     Network
 )
 
 list(APPEND SNOWGUI_SOURCES
+    about.cpp
+    preferences.cpp
+    mainwindow.cpp
 )
 
 list(APPEND SNOWGUI_HEADERS
+    ../globals.h
+    about.h
+    preferences.h
+    mainwindow.h
 )
 
 list(APPEND SNOWGUI_UIS
+    about.ui
+    preferences.ui
+    mainwindow.ui
 )
 
 list(APPEND SNOWGUI_RES
@@ -92,9 +107,10 @@ else()
 	)
 endif()
 
-target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Network)
+target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Network Qt5::Gui Qt5::Widgets)
 
-if(!APPLE)
-	install(TARGETS ${PROJECT_NAME})
+if(APPLE)
+        install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION ${CMAKE_SOURCE_DIR})
+else()
+        install(TARGETS ${PROJECT_NAME})
 endif()
-

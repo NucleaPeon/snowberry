@@ -1,9 +1,12 @@
 cmake_minimum_required(VERSION 3.3)
 project(snowd
-        VERSION 1.0.0
+        VERSION 0.1.0.0
         LANGUAGES C CXX
         DESCRIPTION "Qt5 Collection Manager and Audio Player Daemon"
 )
+
+# Immediately set the version.h header
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/version.h)
 
 find_package(Qt5 REQUIRED
     Core

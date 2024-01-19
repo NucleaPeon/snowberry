@@ -11,8 +11,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = Snowberry
 TEMPLATE = app
 
-SOURCES += main.cpp
-
 OTHER_FILES = \
     snowberrynotes1.txt \
     snowberrynotes.txt \

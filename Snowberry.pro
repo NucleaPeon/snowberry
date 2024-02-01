@@ -23,6 +23,10 @@ OTHER_FILES = \
     snowd/main.cpp \
     snowd/CMakeLists.txt \
     snowd/version.h.in \
+    snowd/daemon.h \
+    snowd/daemon.cpp \
+    snowd/runner/main.cpp \
+    snowd/runner/CMakeLists.txt \
     \
     snowgui/CMakeLists.txt \
     snowgui/main.cpp \

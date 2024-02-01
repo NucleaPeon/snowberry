@@ -19,6 +19,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
+add_subdirectory(snowd/runner)
 add_subdirectory(snowd)
 add_subdirectory(snowctl)
 add_subdirectory(snowgui)
